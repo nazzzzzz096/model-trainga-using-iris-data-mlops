@@ -40,6 +40,6 @@ def main():
         # Log MLflow model with signature
         signature = infer_signature(x_train, model.predict(x_train))
         mlflow.sklearn.log_model(model, artifact_path="model", signature=signature)
-
+        
 if __name__ == "__main__":
     main()
