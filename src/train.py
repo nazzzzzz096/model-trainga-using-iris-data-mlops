@@ -19,7 +19,7 @@ def main():
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=43, test_size=0.2)
 
-    n_estimators = 50
+    n_estimators = 55
     model = RandomForestClassifier(n_estimators=n_estimators, random_state=42)
 
     with mlflow.start_run():   # ✅ Add this
@@ -40,6 +40,6 @@ def main():
         # Log MLflow model with signature
         signature = infer_signature(x_train, model.predict(x_train))
         mlflow.sklearn.log_model(model, artifact_path="model", signature=signature)
-        
+
 if __name__ == "__main__":
     main()
