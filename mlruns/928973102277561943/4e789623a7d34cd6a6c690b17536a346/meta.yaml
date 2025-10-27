@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/week42/model-trainga-using-iris-data-mlops/mlruns/928973102277561943/4e789623a7d34cd6a6c690b17536a346/artifacts
+end_time: 1761555919478
+entry_point_name: ''
+experiment_id: '928973102277561943'
+lifecycle_stage: active
+run_id: 4e789623a7d34cd6a6c690b17536a346
+run_name: unique-pig-505
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761555913144
+status: 3
+tags: []
+user_id: user
