@@ -7,6 +7,7 @@ import os
 import mlflow
 import mlflow.sklearn
 
+mlflow.set_tracking_uri("file:./mlruns")
 mlflow.set_experiment("iris-classification")
 os.makedirs("models",exist_ok=True)
 
