@@ -13,29 +13,33 @@ mlflow.set_experiment("iris-classification")
 os.makedirs("models",exist_ok=True)
 
 def main():
+    df = load_iris()
+    x = df.data
+    y = df.target
 
-    df=load_iris()
-    x=df.data
-    y=df.target
+    x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=43, test_size=0.2)
 
-    x_train,x_test,y_train,y_test=train_test_split(x,y,random_state=43,test_size=0.2)
-    n_estimators=50
-    model=RandomForestClassifier(n_estimators=n_estimators,random_state=42)
-    model.fit(x_train,y_train)
+    n_estimators = 50
+    model = RandomForestClassifier(n_estimators=n_estimators, random_state=42)
 
-    pred=model.predict(x_test)
-    accuracy=accuracy_score(y_test,pred)
+    with mlflow.start_run():   # ✅ Add this
+        model.fit(x_train, y_train)
 
-    mlflow.log_param('n_estimators',n_estimators)
-    mlflow.log_metric('accuracy',accuracy)
-   
+        pred = model.predict(x_test)
+        accuracy = accuracy_score(y_test, pred)
 
-    print(f"accuracy{accuracy}")
+        mlflow.log_param('n_estimators', n_estimators)
+        mlflow.log_metric('accuracy', accuracy)
 
-    joblib.dump(model,"models/model.pkl")
-    mlflow.log_artifact("models/model.pkl")
-    signature = infer_signature(x_train, model.predict(x_train))
-    mlflow.sklearn.log_model(model, artifact_path="model", signature=signature)
+        print(f"accuracy: {accuracy}")
+
+        # Save model locally
+        joblib.dump(model, "models/model.pkl")
+        mlflow.log_artifact("models/model.pkl")
+
+        # Log MLflow model with signature
+        signature = infer_signature(x_train, model.predict(x_train))
+        mlflow.sklearn.log_model(model, artifact_path="model", signature=signature)
 
 if __name__ == "__main__":
     main()
