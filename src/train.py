@@ -6,6 +6,7 @@ import joblib
 import os
 import mlflow
 import mlflow.sklearn
+from mlflow.models.signature import infer_signature
 
 mlflow.set_tracking_uri("file:./mlruns")
 mlflow.set_experiment("iris-classification")
@@ -27,12 +28,14 @@ def main():
 
     mlflow.log_param('n_estimators',n_estimators)
     mlflow.log_metric('accuracy',accuracy)
-    mlflow.sklearn.log_model(model,"model")
+   
 
     print(f"accuracy{accuracy}")
 
     joblib.dump(model,"models/model.pkl")
     mlflow.log_artifact("models/model.pkl")
+    signature = infer_signature(x_train, model.predict(x_train))
+    mlflow.sklearn.log_model(model, artifact_path="model", signature=signature)
 
 if __name__ == "__main__":
     main()
